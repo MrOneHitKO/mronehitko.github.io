@@ -1,0 +1,38 @@
+var rotmg = rotmg || {};
+
+rotmg.Paymentwall = (function ($) {
+
+    //todo remove evaluation from the url
+    var iframeHTML = '<iframe id="paymentwall" src="[IFRAME_URL]" width="570" height="570" frameborder="0"></iframe>'
+
+    var showPaymentwall = function (iframeUrl) {
+        if (iframeUrl.indexOf('http') != 0) {
+            var params = JSON.parse(iframeUrl);
+            return rotmg.Xsolla.showPaymentwall(params.token, params.production);
+        }
+        $(".game_swf").css({position: 'absolute', left: '10000px'});
+        $("#paymentwallContainer").css("display", "block").append($(iframeHTML.replace('[IFRAME_URL]', iframeUrl)));
+    };
+
+    var onPaymentwallClose = function () {
+        try {
+            $(".game_swf").css({position: '', left: ''});
+            $(".game_swf")[0].updatePlayerCredits();
+        } catch (e) {
+        }
+
+        $("#paymentwall").remove();
+        $("#paymentwallContainer").css("display", "none");
+    };
+
+
+    $(function () {
+        $("#paymentwallContainer .close").click(function () {
+            onPaymentwallClose();
+        });
+    });
+
+    return {
+        "showPaymentwall": showPaymentwall
+    };
+})(jQuery);

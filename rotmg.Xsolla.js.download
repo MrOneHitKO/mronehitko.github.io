@@ -1,0 +1,34 @@
+var rotmg = rotmg || {};
+
+rotmg.Xsolla = (function ($) {
+    var showPaymentwall = function (token, production) {
+        XPayStationWidget.init({
+            access_token: token,
+            sandbox: !production
+        });
+        setTimeout(function () {
+            XPayStationWidget.open();
+            XPayStationWidget.on('close', onPaymentwallClose);
+        }, 1000);
+        $(".game_swf").css({position: 'absolute', left: '10000px'});
+    };
+
+    var onPaymentwallClose = function () {
+        try {
+            $(".game_swf").css({position: '', left: ''});
+            $(".game_swf")[0].updatePlayerCredits();
+        } catch (e) {
+        }
+    };
+
+
+    $(function () {
+        $("#paymentwallContainer .close").click(function () {
+            onPaymentwallClose();
+        });
+    });
+
+    return {
+        "showPaymentwall": showPaymentwall
+    };
+})(jQuery);
