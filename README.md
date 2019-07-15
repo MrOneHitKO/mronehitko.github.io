@@ -1,5 +1,3 @@
-# Realm of the Mad God Online Hacks
+# E
 
-Hacked client for RotMG online
-Client used: CrazyClient (CrazyJani) 
-Version x18 Halloween
+E
